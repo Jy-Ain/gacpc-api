@@ -1,0 +1,553 @@
+openapi: 3.0.3
+info:
+  title: API GACPC
+  version: 1.0.0
+  description: API pour la gestion des activités de recherche au CIDST
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  ###########################
+  # Chercheurs CRUD
+  ###########################
+  /chercheurs:
+    get:
+      summary: Liste tous les chercheurs
+      tags: [Chercheurs]
+      responses:
+        '200':
+          description: Liste des chercheurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chercheur'
+    post:
+      summary: Ajoute un nouveau chercheur
+      tags: [Chercheurs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chercheur'
+      responses:
+        '201':
+          description: Chercheur créé
+
+  /chercheurs/{id}:
+    get:
+      summary: Récupère un chercheur par ID
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Chercheur trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chercheur'
+        '404':
+          description: Chercheur introuvable
+    put:
+      summary: Met à jour un chercheur
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Chercheur'
+      responses:
+        '200':
+          description: Chercheur mis à jour
+        '404':
+          description: Chercheur introuvable
+    delete:
+      summary: Supprime un chercheur
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Chercheur supprimé
+        '404':
+          description: Chercheur introuvable
+
+  ###########################
+  # Endpoints spécifiques Chercheurs
+  ###########################
+  /chercheurs/search:
+    get:
+      summary: Recherche multicritère de chercheurs
+      tags: [Chercheurs]
+      parameters:
+        - in: query
+          name: nom
+          schema:
+            type: string
+        - in: query
+          name: specialite
+          schema:
+            type: string
+        - in: query
+          name: institution
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Liste des chercheurs filtrés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chercheur'
+
+  /institutions/{id}/chercheurs:
+    get:
+      summary: Liste tous les chercheurs d'une institution
+      tags: [Institutions]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Liste des chercheurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chercheur'
+
+  /chercheurs/{id}/activites:
+    get:
+      summary: Liste toutes les activités liées à un chercheur
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Liste des activités
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activite'
+
+  /chercheurs/{id}/articles:
+    get:
+      summary: Liste tous les articles liés à un chercheur
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Liste des articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+
+  /chercheurs/{id}/pdf:
+    get:
+      summary: Génère la fiche PDF d’un chercheur
+      tags: [Chercheurs]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Fiche PDF générée
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Chercheur introuvable
+
+  ###########################
+  # Institutions CRUD
+  ###########################
+  /institutions:
+    get:
+      summary: Liste toutes les institutions
+      tags: [Institutions]
+      responses:
+        '200':
+          description: Liste des institutions
+    post:
+      summary: Ajoute une nouvelle institution
+      tags: [Institutions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Institution'
+      responses:
+        '201':
+          description: Institution créée
+
+  /institutions/{id}:
+    get:
+      summary: Récupère une institution
+      tags: [Institutions]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Institution trouvée
+        '404':
+          description: Institution introuvable
+    put:
+      summary: Met à jour une institution
+      tags: [Institutions]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Institution'
+      responses:
+        '200':
+          description: Institution mise à jour
+        '404':
+          description: Institution introuvable
+    delete:
+      summary: Supprime une institution
+      tags: [Institutions]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Institution supprimée
+        '404':
+          description: Institution introuvable
+
+  ###########################
+  # Activités CRUD
+  ###########################
+  /activites:
+    get:
+      summary: Liste toutes les activités
+      tags: [Activités]
+      responses:
+        '200':
+          description: Liste des activités
+    post:
+      summary: Ajoute une activité
+      tags: [Activités]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activite'
+      responses:
+        '201':
+          description: Activité créée
+
+  /activites/{id}:
+    get:
+      summary: Récupère une activité
+      tags: [Activités]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Activité trouvée
+        '404':
+          description: Activité introuvable
+    put:
+      summary: Met à jour une activité
+      tags: [Activités]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activite'
+      responses:
+        '200':
+          description: Activité mise à jour
+        '404':
+          description: Activité introuvable
+    delete:
+      summary: Supprime une activité
+      tags: [Activités]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Activité supprimée
+        '404':
+          description: Activité introuvable
+
+  ###########################
+  # Articles CRUD
+  ###########################
+  /articles:
+    get:
+      summary: Liste tous les articles
+      tags: [Articles]
+      responses:
+        '200':
+          description: Liste des articles
+    post:
+      summary: Ajoute un article
+      tags: [Articles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '201':
+          description: Article créé
+
+  /articles/{id}:
+    get:
+      summary: Récupère un article
+      tags: [Articles]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Article trouvé
+        '404':
+          description: Article introuvable
+    put:
+      summary: Met à jour un article
+      tags: [Articles]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '200':
+          description: Article mis à jour
+        '404':
+          description: Article introuvable
+    delete:
+      summary: Supprime un article
+      tags: [Articles]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Article supprimé
+        '404':
+          description: Article introuvable
+
+  ###########################
+  # Résultats CRUD
+  ###########################
+  /resultats:
+    get:
+      summary: Liste tous les résultats
+      tags: [Résultats]
+      responses:
+        '200':
+          description: Liste des résultats
+    post:
+      summary: Ajoute un résultat
+      tags: [Résultats]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resultat'
+      responses:
+        '201':
+          description: Résultat créé
+
+  /resultats/{id}:
+    get:
+      summary: Récupère un résultat
+      tags: [Résultats]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Résultat trouvé
+        '404':
+          description: Résultat introuvable
+    put:
+      summary: Met à jour un résultat
+      tags: [Résultats]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resultat'
+      responses:
+        '200':
+          description: Résultat mis à jour
+        '404':
+          description: Résultat introuvable
+    delete:
+      summary: Supprime un résultat
+      tags: [Résultats]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Résultat supprimé
+        '404':
+          description: Résultat introuvable
+
+  ###########################
+  # Cache Sync
+  ###########################
+  /sync:
+    get:
+      summary: Synchronisation et mise à jour du cache local
+      tags: [Utilitaires]
+      responses:
+        '200':
+          description: Cache synchronisé
+
+components:
+  schemas:
+    Chercheur:
+      type: object
+      properties:
+        id: { type: integer }
+        nom: { type: string }
+        photo: { type: string }
+        sexe: { type: string }
+        annee_de_naissance: { type: string, format: date }
+        lieu_de_naissance: { type: string }
+        diplome: { type: string }
+        specialite: { type: string }
+        id_institution: { type: integer, nullable: true }
+        date_entre_administration: { type: string, format: date }
+        matricule: { type: string }
+        adresse_mail: { type: string }
+    Institution:
+      type: object
+      properties:
+        id: { type: integer }
+        nom: { type: string }
+        adresse: { type: string }
+        contact: { type: string }
+    Activite:
+      type: object
+      properties:
+        id: { type: integer }
+        titre: { type: string }
+        description: { type: string }
+        date_debut: { type: string, format: date }
+        date_fin: { type: string, format: date }
+    Article:
+      type: object
+      properties:
+        id: { type: integer }
+        titre: { type: string }
+        resume: { type: string }
+        date_publication: { type: string, format: date }
+    Resultat:
+      type: object
+      properties:
+        id: { type: integer }
+        titre: { type: string }
+        description: { type: string }
+        date_resultat: { type: string, format: date }
