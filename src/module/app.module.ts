@@ -4,6 +4,8 @@ import { ChercheursModule } from './chercheurs.module';
 import { ActivitesModule } from './activites.module';
 import { Chercheur } from '../model/chercheur.entity';
 import { Activite } from 'src/model/activites.entity';
+import { ArticlesModule } from './articles.module';
+import { Article } from 'src/model/articles.entity';
 
 @Module({
   imports: [
@@ -14,11 +16,12 @@ import { Activite } from 'src/model/activites.entity';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'gacpc',
-      entities: [Chercheur, Activite], // <-- Activite incluse
+      entities: [Chercheur, Activite, Article],
       synchronize: false,
     }),
     ChercheursModule,
     ActivitesModule,
+    ArticlesModule,
   ],
 })
 export class AppModule {}
