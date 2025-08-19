@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Chercheur } from './chercheur.entity';
-import { CreateChercheurDto } from './dto/create-chercheur.dto';
-import { UpdateChercheurDto } from './dto/update-chercheur.dto';
+import { Chercheur } from '../model/chercheur.entity';
+import { CreateChercheurDto } from '../dto/create-chercheur.dto';
+import { UpdateChercheurDto } from '../dto/update-chercheur.dto';
 
 @Injectable()
 export class ChercheursService {

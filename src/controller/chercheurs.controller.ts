@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
-import { ChercheursService } from './chercheurs.service';
-import { Chercheur } from './chercheur.entity';
-import { CreateChercheurDto } from './dto/create-chercheur.dto';
-import { UpdateChercheurDto } from './dto/update-chercheur.dto';
+import { ChercheursService } from '../services/chercheurs.service';
+import { Chercheur } from '../model/chercheur.entity';
+import { CreateChercheurDto } from '../dto/create-chercheur.dto';
+import { UpdateChercheurDto } from '../dto/update-chercheur.dto';
 
 @Controller('chercheurs')
 export class ChercheursController {

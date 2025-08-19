@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { Chercheur } from './chercheurs/chercheur.entity';
-import { ChercheursModule } from './chercheurs/chercheurs.module';
+import { Chercheur } from '../model/chercheur.entity';
+import { ChercheursModule } from './chercheurs.module';
 
 @Module({
   imports: [
