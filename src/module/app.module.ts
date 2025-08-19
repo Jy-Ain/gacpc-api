@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { Chercheur } from '../model/chercheur.entity';
 import { ChercheursModule } from './chercheurs.module';
+import { ActivitesModule } from './activites.module';
+import { Chercheur } from '../model/chercheur.entity';
+import { Activite } from 'src/model/activites.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST || 'localhost',
@@ -14,10 +14,11 @@ import { ChercheursModule } from './chercheurs.module';
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'gacpc',
-      entities: [Chercheur],
-      synchronize: false, // très important : ne pas modifier la structure en prod
+      entities: [Chercheur, Activite], // <-- Activite incluse
+      synchronize: false,
     }),
     ChercheursModule,
+    ActivitesModule,
   ],
 })
 export class AppModule {}
