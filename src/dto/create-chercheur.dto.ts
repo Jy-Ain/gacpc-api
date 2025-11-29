@@ -6,15 +6,15 @@ export class CreateChercheurDto {
   nom: string;
 
   @IsString()
-  @Length(1, 250)
+  @Length(1, 250) 
   photo: string;
 
   @IsString()
   @Length(1, 45)
   sexe: string;
 
-  @IsDateString()
-  annee_de_naissance: Date;
+  @IsDateString() 
+  annee_de_naissance: string; 
 
   @IsString()
   @Length(1, 80)
@@ -32,9 +32,8 @@ export class CreateChercheurDto {
   @IsInt()
   id_institution?: number;
 
-  @IsDateString()
-  date_entre_administration: Date;
-
+  @IsDateString() 
+  date_entre_administration: string; 
   @IsString()
   @Length(1, 15)
   matricule: string;
